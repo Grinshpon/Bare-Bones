@@ -7,6 +7,8 @@ Entity = Object:new {
   draw = nil,
   pos = {x = 0, y = 0, z = 0},
   destroy = function(self) end,
+  keypressed = function(self, key) end,
+  keyreleased = function(self, key) end,
 }
 
 Collection = Object:new { -- name? World, Scene, Controller, Collection
@@ -58,6 +60,16 @@ Collection = Object:new { -- name? World, Scene, Controller, Collection
       self.Entities[k] = nil
     end
     self.Entities = {}
+  end,
+  keypressed = function(self, key)
+    for _,v in pairs(self.Entities) do
+      if v.keypressed then v:keypressed(key) end
+    end
+  end,
+  keyreleased = function(self, key)
+    for _,v in pairs(self.Entities) do
+      if v.keyreleased then v:keyreleased(key) end
+    end
   end,
 }
 

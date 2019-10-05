@@ -40,6 +40,14 @@ function love.draw()
   CurrentCollection:draw()
 end
 
+function love.keypressed(key)
+  CurrentCollection:keypressed(key)
+end
+
+function love.keyreleased(key)
+  CurrentCollection:keyreleased(key)
+end
+
 function love.quit()
   CurrentCollection:quit()
 end
