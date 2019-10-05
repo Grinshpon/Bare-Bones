@@ -41,7 +41,7 @@ function love.draw()
 end
 
 function love.keypressed(key)
-  print(CurrentCollection.id, key) -- DEBUG
+  print(CurrentCollection.id, key, #CurrentCollection.Entities) -- DEBUG
   CurrentCollection:keypressed(key)
 end
 

@@ -74,9 +74,23 @@ Collection = Object:new { -- name? World, Scene, Controller, Collection
   end,
 }
 
+function Collection:new(o)
+  o = o or {}
+  setmetatable(o, self)
+  self.__index = self
+  o.Entities = {}
+  return o
+end
+
 CurrentCollection = nil
 SuspendedCollections = {}
 LastCollectionId = ""
+
+function loadcollection(c)
+  CurrentCollection:quit()
+  CurrentCollection = c
+  CurrentCollection:load()
+end
 
 function sr_current(r) --suspend and replace current collection
   table.insert(SuspendedCollections, CurrentCollection)

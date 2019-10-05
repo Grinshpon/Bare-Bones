@@ -35,6 +35,7 @@ local menu = Entity:new {
         love.event.quit()
       elseif self.selected == 2 then
         sr_current(OptionsMenu)
+        --loadcollection(OptionsMenu)
       end
     end,
     default = function() end,
