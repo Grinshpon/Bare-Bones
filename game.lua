@@ -12,6 +12,7 @@ Entity = Object:new {
 }
 
 Collection = Object:new { -- name? World, Scene, Controller, Collection
+  id = "",
   Entities = {},
   insert = function(self, entity, ...)
     if entity.id and entity.load and entity.update and entity.destroy then
@@ -39,7 +40,7 @@ Collection = Object:new { -- name? World, Scene, Controller, Collection
     local drawTable = {}
     for _,entity in ipairs(self.Entities) do
       if entity.draw and entity.pos and entity.pos.z then
-        if not drawTable[entity.pos.z] then drawTable[entity.pos.z] = {} end 
+        if not drawTable[entity.pos.z] then drawTable[entity.pos.z] = {} end
         table.insert(drawTable[entity.pos.z], entity)
       end
     end
@@ -74,3 +75,35 @@ Collection = Object:new { -- name? World, Scene, Controller, Collection
 }
 
 CurrentCollection = nil
+SuspendedCollections = {}
+
+function sr_current(r) --suspend and replace current collection
+  table.insert(SuspendedCollections, CurrentCollection)
+  CurrentCollection = r
+  CurrentCollection:load()
+end
+
+function resumecollection(id)
+  for k,v in ipairs(SuspendedCollections) do
+    if v.id == id then
+      CurrentCollection:quit()
+      CurrentCollection = v
+      table.remove(SuspendedCollections, k)
+      return nil
+    end
+  end
+  print "Collection with id "..id.." not found"
+end
+
+function swapcollection(id)
+  for k,v in ipairs(SuspendedCollections) do
+    if v.id == id then
+      local temp = CurrentCollection
+      CurrentCollection = v
+      SuspendedCollections[k] = temp
+      return nil
+    end
+  end
+  print "Collection with id "..id.." not found"
+end
+

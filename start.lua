@@ -1,7 +1,7 @@
 require "game"
 require "util"
 
-local StartMenu = Collection:new()
+local StartMenu = Collection:new {id = "startmenu"}
 
 local skull = love.graphics.newImage("Images/skulllogo.png")
 local selector = love.graphics.newImage("Images/select.png")
@@ -29,7 +29,11 @@ local menu = Entity:new {
   keycase = {
     ["up"] = function(self) if self.selected ~= 1 then self.selected = self.selected-1 end end,
     ["down"] = function(self) if self.selected ~= 3 then self.selected = self.selected + 1 end end,
-    ["enter"] = function() --[[ --]] end,
+    ["return"] = function(self)
+      if self.selected == 3 then
+        love.event.quit()
+      end
+    end,
     default = function() end,
   },
   selected = 1,

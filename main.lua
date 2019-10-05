@@ -1,4 +1,4 @@
-love.window.setTitle "LD45";
+love.window.setTitle "Bare Bones";
 love.graphics.setDefaultFilter("nearest","nearest")
 love.graphics.setNewFont("Fonts/uni05_53.ttf",25)
 
