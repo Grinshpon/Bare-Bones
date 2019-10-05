@@ -27,6 +27,23 @@ function genMap(w,h)
       end
     end
   end
+
+  for i=1, math.random(3,6) do
+    local rw,rh = math.random(1,4), math.random(1,4)
+    local rx,ry = math.random(1,w-rw), math.random(1,h-rh)
+    while map.lvl[ry][rx] == 1 and attempts < 10 do
+      print(attempts)
+      rx,ry = math.random(1,w-rw), math.random(1,h-rh)
+      attempts = attempts + 1
+    end
+    attempts = 0
+    for j=ry, ry+rh do
+      for k = rx, rx+rw do
+        map.lvl[j][k] = 0
+      end
+    end
+  end
+
   do
     local rx,ry = math.random(1,w), math.random(1,h)
     for i=-1,1 do
@@ -92,7 +109,7 @@ function genMap(w,h)
       path = path.parent
     end
 
-    print("c",c,map.lvl[rooms[c][2]][rooms[c][1]])
+    --print("c",c,map.lvl[rooms[c][2]][rooms[c][1]])
     table.remove(rooms, c)
     table.remove(rooms, 1)
   end
