@@ -76,9 +76,11 @@ Collection = Object:new { -- name? World, Scene, Controller, Collection
 
 CurrentCollection = nil
 SuspendedCollections = {}
+LastCollectionId = ""
 
 function sr_current(r) --suspend and replace current collection
   table.insert(SuspendedCollections, CurrentCollection)
+  LastCollectionId = CurrentCollection.id
   CurrentCollection = r
   CurrentCollection:load()
 end
@@ -92,18 +94,18 @@ function resumecollection(id)
       return nil
     end
   end
-  print "Collection with id "..id.." not found"
+  print ("Collection with id "..id.." not found")
 end
 
 function swapcollection(id)
   for k,v in ipairs(SuspendedCollections) do
     if v.id == id then
+      LastCollectionId = CurrentCollection.id
       local temp = CurrentCollection
       CurrentCollection = v
       SuspendedCollections[k] = temp
       return nil
     end
   end
-  print "Collection with id "..id.." not found"
+  print ("Collection with id "..id.." not found")
 end
-

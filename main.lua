@@ -41,6 +41,7 @@ function love.draw()
 end
 
 function love.keypressed(key)
+  print(CurrentCollection.id, key) -- DEBUG
   CurrentCollection:keypressed(key)
 end
 
