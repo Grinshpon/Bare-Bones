@@ -5,17 +5,32 @@ love.graphics.setNewFont("Fonts/uni05_53.ttf",25)
 love.window.setFullscreen(false)
 love.window.setMode(0,0,{resizable=false})
 S_WIDTH, S_HEIGHT = love.graphics.getDimensions()
+
+--global settings
 width, height = 0,0
+volume = 1
+
+function setVolume(n)
+  if n >= 0.0 and n <= 1.0 then
+    love.audio.setVolume(n)
+    volume = n
+  end
+end
+
+function setDims(w,h)
+  width = w
+  height = h
+  love.window.setMode(width,height,{resizable = false})
+end
+
+resolutions = {800,1080,1920}
 
 if S_HEIGHT < 1080 then
-  love.window.setMode(800,800,{resizable = false})
-  width, height = 800,800
+  setDims(800,800)
 elseif S_HEIGHT < 1920 then
-  love.window.setMode(1080, 1080,{resizable = false})
-  width, height = 1080, 1080
+  setDims(1080, 1080)
 else
-  love.window.setMode(1920, 1920,{resizable = false})
-  width, height = 1920, 1920
+  setDims(1920, 1920)
 end
 
 function sratio()
@@ -41,7 +56,7 @@ function love.draw()
 end
 
 function love.keypressed(key)
-  print(CurrentCollection.id, key, #CurrentCollection.Entities) -- DEBUG
+  --print(CurrentCollection.id, key, #CurrentCollection.Entities) -- DEBUG
   CurrentCollection:keypressed(key)
 end
 
