@@ -9,6 +9,8 @@ local Pawn = require "pawn"
 local wall = love.graphics.newImage("Images/wall.png")
 local exit = love.graphics.newImage("Images/exit.png")
 
+local objs = require "objs"
+
 -- tilemap is 20x20 or 40x40?. bottom 2-4? rows are player stats
 
 local messages = Entity:new {
@@ -34,11 +36,11 @@ local messages = Entity:new {
     love.graphics.printf(msg, width/2+20*sratio(), height/20*17+20*sratio(), width/2-40, "left")
   end,
   keypressed = function(self, key)
-    --if key == "space" then
+    if key ~= "escape" then
       if self.queue[1] then
         table.remove(self.queue, 1)
       end
-    --end
+    end
   end,
 }
 
@@ -67,7 +69,7 @@ local map = Entity:new {
   load = function(self) --v (30,30)
     self.depth = 0
     self.lvl = genMap(20,17) -- maps can be bigger than tilescreen size, will need to implement scrolling
-    --self.obj = genObj(self.lvl)
+    self.obj = genObj(self.lvl, objs)
   end
 }
 
@@ -89,7 +91,7 @@ local function genName()
   local file = love.filesystem.newFile("Names/names.txt")
   local n = 0
   for name in file:lines() do
-    if math.random(20) == 1 then
+    if math.random(60) == 1 then
       return name
     end
   end
@@ -160,7 +162,9 @@ local player = Pawn:new {
     default = function() end,
   },
   keypressed = function(self, key)
-    match({key},self.keycase)(self)
+    if #messages.queue == 0 then
+      match({key},self.keycase)(self)
+    end
   end,
   equip = function(self,item)
   end,
