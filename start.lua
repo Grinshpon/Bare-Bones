@@ -3,6 +3,7 @@ require "util"
 
 local StartMenu = Collection:new {id = "startmenu"}
 local OptionsMenu = require "options"
+local World = require "world"
 
 local skull = love.graphics.newImage("Images/skulllogo.png")
 local selector = love.graphics.newImage("Images/select.png")
@@ -35,7 +36,8 @@ local menu = Entity:new {
         love.event.quit()
       elseif self.selected == 2 then
         sr_current(OptionsMenu)
-        --loadcollection(OptionsMenu)
+      elseif self.selected == 1 then
+        loadcollection(World)
       end
     end,
     default = function() end,

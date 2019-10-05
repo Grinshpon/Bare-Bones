@@ -19,13 +19,14 @@ local title = Entity:new {
 local menu = Entity:new {
   id = "menu",
   options = {
-    "Resolution\t",
-    "Sound\t",
-    "Back"
+    "Resolution",
+    "Sound",
+    "Back",
+    "Quit"
   },
   keycase = {
     ["up"] = function(self) if self.selected ~= 1 then self.selected = self.selected-1 end end,
-    ["down"] = function(self) if self.selected ~= 3 then self.selected = self.selected + 1 end end,
+    ["down"] = function(self) if self.selected ~= 4 then self.selected = self.selected + 1 end end,
     ["left"] = function(self)
       if self.selected == 1 then
         for i in ipairs(resolutions) do
@@ -53,7 +54,13 @@ local menu = Entity:new {
     ["return"] = function(self)
       if self.selected == 3 then
         resumecollection(LastCollectionId)
+      elseif self.selected == 4 then
+        love.event.quit()
       end
+    end,
+    ["escape"] = function(self)
+      self.selected = 3
+      self.keycase["return"](self)
     end,
     default = function() end,
   },

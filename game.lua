@@ -6,10 +6,23 @@ Entity = Object:new {
   update = function(self, dt) end,
   draw = nil,
   pos = {x = 0, y = 0, z = 0},
+  angle = 0,
+  scale = {x = 1, y = 1},
+  offset = {x = 0, y = 0},
   destroy = function(self) end,
   keypressed = function(self, key) end,
   keyreleased = function(self, key) end,
 }
+function Entity:new(o)
+  o = o or {}
+  setmetatable(o, self)
+  self.__index = self
+  o.pos = {x = 0, y = 0, z = 0}
+  o.scale = {x=1, y=1}
+  o.offset = {x = 0, y = 0}
+  return o
+end
+
 
 Collection = Object:new { -- name? World, Scene, Controller, Collection
   id = "",
@@ -49,8 +62,8 @@ Collection = Object:new { -- name? World, Scene, Controller, Collection
       table.insert(ixs, k)
     end
     table.sort(ixs)
-    for _,i in ipairs(ixs) do
-      for _,j in ipairs(drawTable[i]) do
+    for i = #ixs, 1, -1 do
+      for _,j in ipairs(drawTable[ixs[i]]) do
         j:draw()
       end
     end
