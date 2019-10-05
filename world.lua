@@ -96,7 +96,7 @@ end
 
 local function moveOrAtk(dx,dy)
   return function(self)
-    if map.lvl[dy+self.y+1] and map.lvl[dy+self.y+1][dx+self.x+1] ~= 0 then --TODO add object collision and combat code
+    if map.lvl[dy+self.y+1] and map.lvl[dy+self.y+1][dx+self.x+1] and map.lvl[dy+self.y+1][dx+self.x+1] ~= 0 then --TODO add object collision and combat code
       self.x = self.x+dx
       self.y = self.y+dy
     else

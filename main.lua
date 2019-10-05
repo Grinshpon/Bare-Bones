@@ -41,12 +41,16 @@ require "util"
 require "game"
 
 local StartMenu = require "start"
+local music = nil
 
 function love.load()
   CurrentCollection = StartMenu
   CurrentCollection:load()
   math.randomseed(os.time())
   love.mouse.setVisible(false)
+  music = love.audio.newSource("Music/music1.wav", "stream")
+  music:setLooping(true)
+  music:play()
 end
 
 function love.update(dt)
