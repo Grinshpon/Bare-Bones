@@ -1,34 +1,12 @@
 local astar = {}
 
-util = require "util"
+require "util"
 
 local Map = {}
-Map = util.Object:new{
+Map = Object:new{
 	lvl = nil,
 	width = 0,
 	height = 0,
-  printCase = nil,
-	__tostring = function(self)
-		local s = "+"
-		for _=1,self.width do
-			s = s.."-"
-		end
-		s = s.."+\n"
-		for i in pairs(self.lvl) do
-			s = s.."|"
-			for j in pairs(self.lvl[i]) do
-				local t = self.lvl[i][j]
-  			s = s..util.match({t},self.printCase)
-			end
-			s = s.."|\n"
-		end
-		s = s.."+"
-		for _=1,self.width do
-			s = s.."-"
-		end
-		s = s.."+"
-		return s
-	end
 }
 astar.Map = Map
 
@@ -54,7 +32,7 @@ function dist(...)
 	return mh_dist(...) -- manhattan distance (while still allowing diagonal movement) seems to lead to the best result
 end
 
-local Tile = util.Object:new{
+local Tile = Object:new{
 	x = 0,
 	y = 0,
 	G = 0,
@@ -130,7 +108,7 @@ function surrounding(openList, closeList, map, t, end_point)
 			local nx, ny = t.x+x,t.y+y
 			if not ((x == 0 and y == 0) or (nx < 1) or (ny < 1) or (nx > map.width) or (ny > map.height) or findClose(closeList, nx,ny)) then
 				local p = map.lvl[ny][nx]
-				if p == 0 or p == 3 or p == 4 then
+				if p == 0 or p == 3 or p == 1 then
 					local ni = findOpen(openList, nx,ny)
 					local nu = nil
 					if ni == -1 then
@@ -153,7 +131,7 @@ function surrounding(openList, closeList, map, t, end_point)
 						return nu
 					end
 					if p == 0 then
-						map.lvl[ny][nx] = 4
+						--map.lvl[ny][nx] = 1
 					end
 				end
 			end
@@ -161,7 +139,7 @@ function surrounding(openList, closeList, map, t, end_point)
 	end
 end
 
-function astar.findPath(map, start_point, end_point) --TODO: instead of modifying map, return path from start to end
+function astar.findPath(map, start_point, end_point)
   local openList = {}
   local closeList = {}
 
@@ -176,5 +154,8 @@ function astar.findPath(map, start_point, end_point) --TODO: instead of modifyin
 	end
 	return f
 end
+
+--TODO: function findPath: instead of modifying map, return path from start to end
+
 
 return astar

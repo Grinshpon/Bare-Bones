@@ -45,6 +45,8 @@ local StartMenu = require "start"
 function love.load()
   CurrentCollection = StartMenu
   CurrentCollection:load()
+  math.randomseed(os.time())
+  love.mouse.setVisible(false)
 end
 
 function love.update(dt)
