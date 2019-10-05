@@ -123,11 +123,43 @@ local statbar = Entity:new {
   end,
 }
 
+local messages = Entity:new {
+  id = "messages",
+  queue = {},
+  add = function(self, msg)
+    table.insert(self.queue, msg)
+  end,
+  load = function(self)
+    self:add("You awaken with nothing. No clothes, no weapons, and no skin. You've been dead a while...")
+    self:add("You are not safe in this dungeon. The creatures can sense the magic that resurrected you.")
+    self:add("You must escape. But will an undead being even be accepted outside?")
+  end,
+  draw = function(self)
+    local msg = ""
+    if #self.queue > 0 then
+      msg = msg..self.queue[1]
+      --table.remove(self.queue, 1)
+      if #self.queue > 1 then
+        msg = msg.." -more- "
+      end
+    end
+    love.graphics.printf(msg, width/2+20*sratio(), height/20*17+20*sratio(), width/2-40, "left")
+  end,
+  keypressed = function(self, key)
+    --if key == "space" then
+      if self.queue[1] then
+        table.remove(self.queue, 1)
+      end
+    --end
+  end,
+}
+
 GameWorld.load = function(self)
   self:insert(inputs)
   self:insert(map)
   self:insert(player)
   self:insert(statbar)
+  self:insert(messages)
 end
 
 return GameWorld
