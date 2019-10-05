@@ -125,3 +125,21 @@ function genMap(w,h)
 
   return map.lvl
 end
+
+
+function genObj(lvl, objs)
+  local res = {}
+  for y in ipairs(lvl) do
+    for x in ipairs(lvl) do
+      if lvl[y][x] == 1 then
+        local chance = math.random(20)
+        if chance == 1 then
+          if not res[y] then
+            res[y] = {}
+          end
+          res[y][x] = objs:rand()
+        end
+      end
+    end
+  end
+end

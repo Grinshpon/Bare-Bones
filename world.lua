@@ -46,6 +46,7 @@ local map = Entity:new {
   id = "map",
   lvl = {}, -- dungeon, randomly generate
   obj = {}, -- object layer of map (items, nps, etc)
+  depth = 0,
   draw = function(self)
     local todraw = nil
     for y in ipairs(self.lvl) do
@@ -64,8 +65,9 @@ local map = Entity:new {
     end
   end,
   load = function(self) --v (30,30)
+    self.depth = 0
     self.lvl = genMap(20,17) -- maps can be bigger than tilescreen size, will need to implement scrolling
-    --self.obj = self:genObj()
+    --self.obj = genObj(self.lvl)
   end
 }
 
