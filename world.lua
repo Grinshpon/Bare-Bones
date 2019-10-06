@@ -115,7 +115,7 @@ local function moveOrAtk(dx,dy)
 end
 
 
-Nil = {id = "ooga"}
+Nil = {id = ""}
 --global
 player = Pawn:new {
   id = "player",
