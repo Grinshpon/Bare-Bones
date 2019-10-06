@@ -5,11 +5,13 @@ require "genmap"
 local GameWorld = Collection:new {id = "world"}
 local OptionsMenu = require "options"
 local Pawn = require "pawn"
+local InventoryMenu = require "inventory"
 
 local wall = love.graphics.newImage("Images/wall.png")
 local exit = love.graphics.newImage("Images/exit.png")
 
 local objs = require "objs"
+objs.items = require "items"
 
 -- tilemap is 20x20 or 40x40?. bottom 2-4? rows are player stats
 
@@ -36,7 +38,7 @@ local messages = Entity:new {
     love.graphics.printf(msg, width/2+20*sratio(), height/20*17+20*sratio(), width/2-40, "left")
   end,
   keypressed = function(self, key)
-    if key ~= "escape" then
+    if key ~= "escape" and key ~= "i" then
       if self.queue[1] then
         table.remove(self.queue, 1)
       end
@@ -79,6 +81,9 @@ local inputs = Entity:new {
     ["escape"] = function(self)
       sr_current(OptionsMenu)
     end,
+    ["i"] = function(self)
+      sr_current(InventoryMenu)
+    end,
     default = function() end,
   },
   keypressed = function(self, key)
@@ -109,19 +114,22 @@ local function moveOrAtk(dx,dy)
   end
 end
 
-local player = Pawn:new {
+
+Nil = {id = "ooga"}
+--global
+player = Pawn:new {
   id = "player",
   name = "playername", --random name gen
   x=0,y=0,
   hp = 10,
   maxhp = 10,
-  equiped = {
-    head,
-    body,
-    legs,
-    pack,
-    lhand,
-    rhand,
+  equipped = {
+    head = Nil,
+    body = Nil,
+    legs = Nil,
+    pack = Nil,
+    lhand = Nil,
+    rhand = Nil,
   },
   inventorySize = 0,
   inventory = {},
@@ -131,15 +139,15 @@ local player = Pawn:new {
     self.hp = 10
     self.inventorySize = 0
     self.inventory = {}
-    for _,v in pairs(self.equiped) do
-      v = nil
+    for _,v in pairs(self.equipped) do
+      v = Nil
     end
     self.scale = {x = (height/20)/self.image:getHeight(), y = (width/20)/self.image:getWidth()}
     for y in ipairs(map.lvl) do
       for x in ipairs(map.lvl[y]) do
         if map.lvl[y][x] == 2 then
-          self.x = x
-          self.y = y
+          self.x = x-1
+          self.y = y-1
           break
         end
       end

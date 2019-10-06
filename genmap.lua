@@ -11,8 +11,8 @@ function genMap(w,h)
   end
 
   local attempts = 0
-  for i=1, math.random(2,4)*2 do
-    local rw,rh = math.random(3,6), math.random(3,6)
+  for i=1, math.random(2,5)*2 do
+    local rw,rh = math.random(3,7), math.random(3,7)
     local rx,ry = math.random(1,w-rw), math.random(1,h-rh)
     while map.lvl[ry][rx] == 1 and attempts < 10 do
       print(attempts)
@@ -29,7 +29,7 @@ function genMap(w,h)
   end
 
   for i=1, math.random(3,6) do
-    local rw,rh = math.random(1,4), math.random(1,4)
+    local rw,rh = math.random(1,5), math.random(1,5)
     local rx,ry = math.random(1,w-rw), math.random(1,h-rh)
     while map.lvl[ry][rx] == 1 and attempts < 10 do
       print(attempts)
@@ -48,7 +48,7 @@ function genMap(w,h)
     local rx,ry = math.random(1,w), math.random(1,h)
     for i=-1,1 do
       for j = -1,1 do
-        if map.lvl[ry+i] then
+        if map.lvl[ry+i] and map.lvl[ry+i][rx+j] then
           map.lvl[ry+i][rx+j] = 1
         end
       end
