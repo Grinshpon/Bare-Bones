@@ -187,7 +187,7 @@ player = Pawn:new {
       if map.obj[self.y+1] and map.obj[self.y+1][self.x+1] then
         local found = map.obj[self.y+1][self.x+1]
         if self.equipped.pack == Nil or #self.equipped.pack.storage == self.equipped.pack.limit then
-          if found.id == "backpack" then
+          if self.equipped.pack == Nil and found.id == "backpack" then
             messages:add("Putting on: "..found.name)
             self.equipped.pack = found
             map.obj[self.y+1][self.x+1] = nil
