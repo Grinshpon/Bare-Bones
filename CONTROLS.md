@@ -1,5 +1,12 @@
 # Controls
 
+### Menus
+| Command          | Key        |
+|------------------|------------|
+| Navigate         | Arrow Keys |
+| Submit           | Enter      |
+
+
 ### Movement/Attacking Directions
 | | | |
 |-|-|-|
@@ -10,5 +17,7 @@
 ### Commands
 | Command          | Key   |
 |------------------|-------|
-| Inventoy         | I     |
+| Inventory        | i     |
 | Interact/Pick Up | .     |
+| Equip            | e     |
+| Drop             | d     |
