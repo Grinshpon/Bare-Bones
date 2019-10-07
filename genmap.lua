@@ -58,7 +58,7 @@ function genMap(w,h)
     rx,ry = math.random(1,w), math.random(1,h)
     for i=-1,1 do
       for j = -1,1 do
-        if map.lvl[ry+i] then
+        if map.lvl[ry+i] and map.lvl[ry+i][rx+j] then
           map.lvl[ry+i][rx+j] = 1
         end
       end
@@ -132,7 +132,7 @@ function genObj(lvl, objs)
   for y in ipairs(lvl) do
     for x in ipairs(lvl) do
       if lvl[y][x] == 1 then
-        if math.random(30) == 1 then
+        if math.random(40) == 1 then
           if not res[y] then
             res[y] = {}
           end

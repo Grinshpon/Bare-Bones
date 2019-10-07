@@ -112,7 +112,10 @@ local function moveOrAtk(dx,dy)
       self.x = self.x+dx
       self.y = self.y+dy
       if map.obj[self.y+1] and map.obj[self.y+1][self.x+1] then
-        messages:add("You find a "..map.obj[self.y+1][self.x+1].name.." on the floor")
+        messages:add("You find: "..map.obj[self.y+1][self.x+1].name)
+      end
+      if map.lvl[self.y+1][self.x+1] == 3 then
+        messages:add("You found a stairway up to the next level. Proceed?")
       end
     else
       messages:add("That way is blocked")
@@ -138,13 +141,13 @@ player = Pawn:new {
     rhand = Nil,
   },
   inventorySize = 0,
-  inventory = {},
+  --inventory = {},
   image = love.graphics.newImage("Images/skeleton.png"),
   load = function(self)
     self.name = genName()
     self.hp = 10
     self.inventorySize = 0
-    self.inventory = {}
+    --self.inventory = {}
     for _,v in pairs(self.equipped) do
       v = Nil
     end
@@ -164,6 +167,13 @@ player = Pawn:new {
     self.pos.y = self.y*(height/20)
     self.scale = {x = (height/20)/self.image:getHeight(), y = (width/20)/self.image:getWidth()}
   end,
+  itemcase = {
+    ["helmet"] = function(self) return self.equipped.head end,
+    ["chest"] = function(self) return self.equipped.body end,
+    ["pants"] = function(self) return self.equipped.legs end,
+    ["sword"] = function(self) return self.equipped.rhand end,
+    default = function() return Nil end
+  },
   keycase = {
     ["k"] = moveOrAtk(0,-1), --up
     ["j"] = moveOrAtk(0,1), --down
@@ -173,6 +183,43 @@ player = Pawn:new {
     ["u"] = moveOrAtk(1,-1), --up-right
     ["b"] = moveOrAtk(-1,1), --down-left
     ["n"] = moveOrAtk(1,1), --down-right
+    ["."] = function(self)
+      if map.obj[self.y+1] and map.obj[self.y+1][self.x+1] then
+        local found = map.obj[self.y+1][self.x+1]
+        if self.equipped.pack == Nil or #self.equipped.pack.storage == self.equipped.pack.limit then
+          if found.id == "backpack" then
+            messages:add("Putting on: "..found.name)
+            self.equipped.pack = found
+            map.obj[self.y+1][self.x+1] = nil
+          elseif found.id == "helmet" or found.id == "chest" or found.id == "pants" or found.id == "sword" then
+            --match for if you already have something equipped, then give putting on message
+            local part = match({found.id},self.itemcase)(self)
+            if part ~= Nil then
+              messages:add("You have nowhere to put this")
+            else
+              messages:add("Equipping: "..found.name)
+              if found.id == "helmet" then self.equipped.head = found
+              elseif found.id == "chest" then self.equipped.body = found
+              elseif found.id == "pants" then self.equipped.legs = found
+              elseif found.id == "sword" then self.equipped.rhand = found
+              end
+              map.obj[self.y+1][self.x+1] = nil
+            end
+          else
+            messages:add("You have nowhere to put this")
+          end
+        else
+          messages:add("Picking up: "..found.name)
+          table.insert(self.equipped.pack.storage, found)
+          map.obj[self.y+1][self.x+1] = nil
+        end
+      elseif map.lvl[self.y+1][self.x+1] == 3 then
+        messages:add("Climbing up...")
+        --generate new level with higher difficulty and add to depth
+      else
+        messages:add("There's nothing to interact with")
+      end
+    end,
     default = function() end,
   },
   keypressed = function(self, key)

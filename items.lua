@@ -9,16 +9,6 @@ local Backpack = Entity:new {
   --x = 0, y = 0,
   storage = {},
   limit = 0,
-  load = function(self)
-    self.storage = {}
-    --self.x = 0
-    --self.y = 0
-  end,
-  update = function(self,dt)
-    --self.pos.x = self.x*(height/20)
-    --self.pos.y = self.y*(height/20)
-    --self.scale = {x = (height/20)/self.image:getHeight(), y = (width/20)/self.image:getWidth()}
-  end,
 }
 table.insert(Items, Backpack:new {name = "Backpack (3)", limit = 3, storage = {}})
 
@@ -48,7 +38,7 @@ local Pants = Entity:new {
   image = love.graphics.newImage("Images/pants.png"),
   def = 0
 }
-table.insert(Items, Chest:new {name = "Pants (1)", def = 1})
+table.insert(Items, Pants:new {name = "Pants (1)", def = 1})
 
 local Token = Entity:new {
   id = "token",

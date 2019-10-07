@@ -25,7 +25,7 @@ local Controller = Entity:new {
     love.graphics.print("Inventory:",width/2,120*sratio())
     if player.equipped.pack ~= Nil then
       for i,v in ipairs(player.equipped.pack.storage) do
-        love.graphics.print(v.name, width/2, (150+(i-1)*100)*sratio())
+        love.graphics.print(v.name, width/2, (150+(i)*100)*sratio())
       end
     end
   end,
