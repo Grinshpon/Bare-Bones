@@ -8,6 +8,9 @@
 
 
 ### Movement/Attacking Directions
+
+This game uses traditional roguelike controls for movement.
+
 | | | |
 |-|-|-|
 | y | k | u |
