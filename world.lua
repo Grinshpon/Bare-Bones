@@ -65,6 +65,9 @@ local map = Entity:new {
         if todraw then
           love.graphics.draw(todraw, (x-1)*(height/20), (y-1)*(width/20), 0, (height/20)/wall:getHeight(), (width/20)/wall:getWidth())
         end
+        if self.obj[y] and self.obj[y][x] then
+          love.graphics.draw(self.obj[y][x].image, (x-1)*(height/20), (y-1)*(width/20), 0, (height/20)/self.obj[y][x].image:getHeight(), (width/20)/self.obj[y][x].image:getWidth())
+        end
       end
     end
   end,
@@ -108,6 +111,9 @@ local function moveOrAtk(dx,dy)
     if map.lvl[dy+self.y+1] and map.lvl[dy+self.y+1][dx+self.x+1] and map.lvl[dy+self.y+1][dx+self.x+1] ~= 0 then --TODO add object collision and combat code
       self.x = self.x+dx
       self.y = self.y+dy
+      if map.obj[self.y+1] and map.obj[self.y+1][self.x+1] then
+        messages:add("You find a "..map.obj[self.y+1][self.x+1].name.." on the floor")
+      end
     else
       messages:add("That way is blocked")
     end
@@ -115,7 +121,7 @@ local function moveOrAtk(dx,dy)
 end
 
 
-Nil = {id = ""}
+Nil = {id = "", name = ""}
 --global
 player = Pawn:new {
   id = "player",
@@ -189,7 +195,7 @@ local statbar = Entity:new {
     love.graphics.rectangle("line", 0,height/20*17, width/2, height/20*3) -- stats
     love.graphics.rectangle("line", width/2, height/20*17, width/2, height/20*3) -- console (you awaken..., you move..., you find..., etc)
     love.graphics.print(player.name, 20*sratio(), height/20*17+20*sratio())
-    love.graphics.print("Hp: "..player.hp, 20*sratio(), height/20*18+20*sratio())
+    love.graphics.print("Hp: "..player.hp.."("..player.maxhp..")", 20*sratio(), height/20*18+20*sratio())
   end,
 }
 

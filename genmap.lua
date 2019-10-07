@@ -15,7 +15,7 @@ function genMap(w,h)
     local rw,rh = math.random(3,7), math.random(3,7)
     local rx,ry = math.random(1,w-rw), math.random(1,h-rh)
     while map.lvl[ry][rx] == 1 and attempts < 10 do
-      print(attempts)
+      --print(attempts)
       rx,ry = math.random(1,w-rw), math.random(1,h-rh)
       attempts = attempts + 1
     end
@@ -132,8 +132,7 @@ function genObj(lvl, objs)
   for y in ipairs(lvl) do
     for x in ipairs(lvl) do
       if lvl[y][x] == 1 then
-        local chance = math.random(20)
-        if chance == 1 then
+        if math.random(30) == 1 then
           if not res[y] then
             res[y] = {}
           end
@@ -142,4 +141,5 @@ function genObj(lvl, objs)
       end
     end
   end
+  return res
 end
